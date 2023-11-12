@@ -1,0 +1,29 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Build Docker Image
+      run: docker build -t your-image-name .
+
+    - name: Run Docker Container
+      run: docker run -d -p 5000:5000 --name your-container-name your-image-name
+
+    - name: Wait for Application to Start
+      run: sleep 10
+
+    - name: Run Tests (replace with your actual test command)
+      run: docker exec your-container-name python -m unittest discover -s tests
+
+    - name: Stop Docker Container
+      run: docker stop your-container-name
